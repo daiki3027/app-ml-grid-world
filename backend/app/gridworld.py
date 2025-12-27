@@ -127,6 +127,33 @@ class GridWorld:
         fallback_grid[goal[1]][goal[0]] = 3
         return cls(grid=fallback_grid, start=start, goal=goal, traps=[])
 
+    @classmethod
+    def memory_challenge(cls) -> "GridWorld":
+        """
+        Maze with a loop/T-junction so local 5x5 views can be ambiguous without memory.
+        Agent starts at top-left, must remember past turns to avoid cycling.
+        """
+        grid = [
+            [2, 0, 0, 0, 0, 1, 0, 0, 0, 0],
+            [1, 1, 1, 0, 0, 1, 0, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 1, 0],
+            [0, 1, 0, 1, 1, 1, 1, 0, 1, 0],
+            [0, 1, 0, 0, 0, 0, 1, 0, 0, 0],
+            [0, 1, 1, 1, 1, 0, 1, 1, 1, 0],
+            [0, 0, 0, 0, 0, 0, 0, 0, 0, 0],
+            [0, 1, 1, 1, 0, 1, 1, 1, 0, 1],
+            [0, 0, 0, 1, 0, 0, 0, 1, 0, 0],
+            [1, 1, 0, 0, 0, 1, 0, 0, 0, 3],
+        ]
+        start = (0, 0)
+        goal = (9, 9)
+        traps: List[Position] = [(5, 0), (5, 2)]
+        for tx, ty in traps:
+            grid[ty][tx] = 4
+        grid[start[1]][start[0]] = 2
+        grid[goal[1]][goal[0]] = 3
+        return cls(grid=grid, start=start, goal=goal, traps=traps)
+
     def step(self, action: int) -> StepResult:
         # Actions: 0=up,1=down,2=left,3=right
         moves = {0: (0, -1), 1: (0, 1), 2: (-1, 0), 3: (1, 0)}

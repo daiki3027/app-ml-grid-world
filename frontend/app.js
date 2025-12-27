@@ -9,6 +9,9 @@ const successEl = document.getElementById("success_rate");
 const learningEl = document.getElementById("learning");
 const speedEl = document.getElementById("speed");
 const lastActionEl = document.getElementById("last_action");
+const lastLossEl = document.getElementById("last_loss");
+const avgLossEl = document.getElementById("avg_loss");
+const avgEpRewardEl = document.getElementById("avg_ep_reward");
 
 let ws;
 let grid = [];
@@ -68,6 +71,11 @@ function updateStats(data) {
     data.last_action === null || data.last_action === undefined
       ? "-"
       : actionNames[data.last_action] || data.last_action;
+  lastLossEl.textContent = data.last_loss !== null && data.last_loss !== undefined ? data.last_loss : "-";
+  avgLossEl.textContent =
+    data.avg_recent_loss !== null && data.avg_recent_loss !== undefined ? data.avg_recent_loss : "-";
+  avgEpRewardEl.textContent =
+    data.avg_episode_reward !== null && data.avg_episode_reward !== undefined ? data.avg_episode_reward : "-";
 }
 
 function resizeCanvas() {
